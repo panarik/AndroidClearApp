@@ -3,12 +3,7 @@
 node('home-panarik') {
 
     stage ('Checkout') {
-        checkout([
-                $class: 'GitSCM',
-                branches: [
-                        [name: 'Jenkins-ForEmulator']
-                ]
-        ])
+        checkout scm
     }
 
 
