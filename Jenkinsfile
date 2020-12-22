@@ -2,6 +2,16 @@
 
 node('home-panarik') {
 
+    stage ('Checkout') {
+        checkout([
+                $class: 'GitSCM',
+                branches: [
+                        [name: 'Jenkins-ForEmulator']
+                ]
+        ])
+    }
+
+
     stage('Build app') {
         echo 'Билдим приложуху'
         sh './gradlew clean assembleDebug --no-daemon'
