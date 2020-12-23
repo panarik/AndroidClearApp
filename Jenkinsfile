@@ -1,24 +1,30 @@
-#!/usr/bin/env groovy
+pipeline {
 
-node('home-panarik') {
+    stages {
 
-    stage('Checkout') {
-        checkout scm
-    }
-
-    withEnv(["ANDROID_SDK_ROOT=/usr/lib/android-sdk"]) {
-
-        stage('Build app') {
-            echo 'Билдим приложуху'
-            sh './gradlew clean assembleDebug --no-daemon'
+        stage('Build') {
+            node('jenkins-agent-build') {
+                checkout scm
+                steps {
+                    echo 'Билдим приложуху'
+                    sh './gradlew clean assembleDebug --no-daemon'
+                    stash name: 'app', includes: '**', excludes: '**/.gradle/,**/.git/**'
+                }
+            }
         }
 
-        stage('Run Android tests') {
-            echo 'Запускаем UI тесты на запущенном устройстве'
-            sh './gradlew connectedAndroidTest --no-daemon'
+        stage('Test') {
+            node('home-panarik') {
+                try {
+                    unstash 'app'
+                    sh './gradlew connectedAndroidTest --no-daemon'
+                }
+                finally {
+                    junit '**/debugAndroidTest/**'
+                }
+            }
+
         }
 
     }
-
-
 }
