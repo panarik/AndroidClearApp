@@ -2,6 +2,10 @@ pipeline {
 
     agent none
 
+    environment {
+        ANDROID_SDK_ROOT = '/usr/lib/android-sdk'
+    }
+
     stages {
 
         stage('Checkout scm') {
