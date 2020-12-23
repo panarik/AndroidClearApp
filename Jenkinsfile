@@ -1,25 +1,40 @@
 pipeline {
 
+    agent none
+
     stages {
 
-        stage('Build') {
-            node('jenkins-agent-build') {
+        stage('Checkout scm') {
+            agent {
+                label 'jenkins-agent-build'
+            }
+            steps {
                 checkout scm
-                steps {
-                    echo 'Билдим приложуху'
-                    sh './gradlew clean assembleDebug --no-daemon'
-                    stash name: 'app', includes: '**', excludes: '**/.gradle/,**/.git/**'
-                }
+            }
+        }
+
+        stage('Build') {
+            agent {
+                label 'jenkins-agent-build'
+            }
+            steps {
+                echo 'Билдим приложуху'
+                sh './gradlew clean assembleDebug --no-daemon'
+                stash name: 'app', includes: '**', excludes: '**/.gradle/,**/.git/**'
             }
         }
 
         stage('Test') {
-            node('home-panarik') {
-                try {
-                    unstash 'app'
-                    sh './gradlew connectedAndroidTest --no-daemon'
-                }
-                finally {
+
+            agent {
+                label 'home-panarik'
+            }
+            steps {
+                unstash 'app'
+                sh './gradlew connectedAndroidTest --no-daemon'
+            }
+            post {
+                always {
                     junit '**/debugAndroidTest/**'
                 }
             }
