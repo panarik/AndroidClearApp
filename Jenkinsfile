@@ -35,7 +35,11 @@ pipeline {
             }
             steps {
                 unstash 'app'
+                sh 'adb connect 192.168.1.70:7425'
+                sh 'sleep 100'
+                sh 'adb devices'
                 sh './gradlew connectedAndroidTest --no-daemon'
+
             }
             post {
                 always {
