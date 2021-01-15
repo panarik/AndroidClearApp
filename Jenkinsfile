@@ -4,7 +4,7 @@ pipeline {
 
     environment {
         ANDROID_SDK_ROOT = '/usr/lib/android-sdk'
-        PATH = "/home/ubuntu/DevTools/stf-console-client-0.3.4/bin:${env.PATH}"
+        PATH = '/home/ubuntu/DevTools/stf-console-client-0.3.4/bin:${env.PATH}'
     }
 
     stages {
