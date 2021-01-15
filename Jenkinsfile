@@ -36,6 +36,7 @@ pipeline {
             steps {
                 echo 'test app'
                 unstash 'app'
+                sh 'pwd'
                 sh 'stf'
                 sh 'stf devices --all'
                 sh 'sleep 5'
