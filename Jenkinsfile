@@ -22,7 +22,7 @@ pipeline {
                 label 'build app node'
             }
             steps {
-                echo 'Билдим приложуху'
+                echo 'build app'
                 sh './gradlew clean assembleDebug --no-daemon'
                 stash name: 'app', includes: '**', excludes: '**/.gradle/,**/.git/**'
             }
@@ -34,6 +34,7 @@ pipeline {
                 label 'build test node'
             }
             steps {
+                echo 'test app'
                 unstash 'app'
                 sh 'stf devices --all'
                 sh 'sleep 5'
