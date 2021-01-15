@@ -10,7 +10,7 @@ pipeline {
 
         stage('Checkout scm') {
             agent {
-                label 'jenkins-agent-build'
+                label 'build app node'
             }
             steps {
                 checkout scm
@@ -19,7 +19,7 @@ pipeline {
 
         stage('Build') {
             agent {
-                label 'jenkins-agent-build'
+                label 'build app node'
             }
             steps {
                 echo 'Билдим приложуху'
@@ -28,14 +28,16 @@ pipeline {
             }
         }
 
-        stage('Test') {
+        stage('OnFarmTest') {
 
             agent {
-                label 'home-panarik'
+                label 'build test node'
             }
             steps {
                 unstash 'app'
-                sh 'adb connect 192.168.1.70:7425'
+                sh 'stf devices --all'
+                sh 'sleep 5'
+                sh 'stf connect --all &'
                 sh 'sleep 5'
                 sh 'adb devices'
                 sh './gradlew connectedAndroidTest --no-daemon'
