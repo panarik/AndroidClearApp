@@ -21,11 +21,7 @@ pipeline {
             agent {
                 label 'build app node'
             }
-            environment {
-                PATH = "/home/ubuntu/DevTools/stf-console-client-0.3.4/bin:$PATH"
-            }
             steps {
-                echo "PATH is: $PATH"
                 echo 'build app'
                 sh './gradlew clean assembleDebug --no-daemon'
                 stash name: 'app', includes: '**', excludes: '**/.gradle/,**/.git/**'
@@ -37,7 +33,11 @@ pipeline {
             agent {
                 label 'build test node'
             }
+            environment {
+                PATH = "/home/ubuntu/DevTools/stf-console-client-0.3.4/bin:$PATH"
+            }
             steps {
+                echo "PATH is: $PATH"
                 echo 'test app'
                 unstash 'app'
                 sh 'pwd'
