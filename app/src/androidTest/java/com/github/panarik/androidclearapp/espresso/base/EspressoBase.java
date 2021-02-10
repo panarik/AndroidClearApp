@@ -1,4 +1,4 @@
-package com.github.panarik.androidclearapp.espresso.main;
+package com.github.panarik.androidclearapp.espresso.base;
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -11,7 +11,7 @@ import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class EspressoMain {
+public class EspressoBase {
 
     @Rule
     public ActivityScenarioRule<MainActivity> activityRule =
